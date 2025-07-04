@@ -152,6 +152,11 @@ button:hover {
   font-size: 1.2rem;
 }
 
+.sidebar nav li .fa-pie-chart {
+  font-size: 1.2rem;
+  margin-right: 4px;
+}
+
 .sidebar-footer {
   margin-top: auto;
   padding: 18px 24px;

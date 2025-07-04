@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDataPipeline } from './DataPipelineContext';
 
 function EkstraksiFiturPage() {
   const { preprocessed, features, setFeatures } = useDataPipeline();
 
-  const handleEkstraksiFitur = () => {
+  useEffect(() => {
+    if (preprocessed.length === 0) return;
     const allTokens = preprocessed.flatMap(tw => tw.clean_tokens);
     const freq = {};
     allTokens.forEach(token => {
@@ -17,8 +18,9 @@ function EkstraksiFiturPage() {
     vocab.forEach(token => {
       prob[token] = (freq[token] + 1) / (total + vocabSize);
     });
-    setFeatures({ freq, prob }); // <-- simpan ke context global!
-  };
+    setFeatures({ freq, prob });
+    // eslint-disable-next-line
+  }, [preprocessed]);
 
   return (
     <div className="card">
@@ -26,7 +28,6 @@ function EkstraksiFiturPage() {
       {preprocessed.length === 0 && <div>Belum ada data preprocessing. Silakan preprocessing dulu.</div>}
       {preprocessed.length > 0 && (
         <>
-          <button onClick={handleEkstraksiFitur}>Ekstraksi Fitur & Probabilitas</button>
           {features && (
             <div style={{ marginTop: 20 }}>
               <b>Frekuensi & Probabilitas Kata:</b>

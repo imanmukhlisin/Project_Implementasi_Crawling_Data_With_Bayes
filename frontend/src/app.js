@@ -1,12 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { FaTwitter, FaCog, FaChartBar, FaTable } from 'react-icons/fa';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
+import { FaTwitter, FaCog, FaChartBar, FaTable, FaChartPie } from "react-icons/fa";
 //import { MdOutlineAnalytics } from 'react-icons/md';
-import CrawlingPage from './CrawlingPage';
-import PreprocessingPage from './PreprocessingPage';
-import EkstraksiFiturPage from './EkstraksiFiturPage';
-import KlasifikasiPage from './KlasifikasiPage';
-import './App.css';
+import CrawlingPage from "./CrawlingPage";
+import PreprocessingPage from "./PreprocessingPage";
+import EkstraksiFiturPage from "./EkstraksiFiturPage";
+import KlasifikasiPage from "./KlasifikasiPage";
+import PilihSentimenPage from "./PilihSentimenPage";
+import "./App.css";
 
 function Sidebar() {
   const location = useLocation();
@@ -22,7 +29,9 @@ function Sidebar() {
             <FaTwitter />
             <Link to="/">Crawling Data Twitter</Link>
           </li>
-          <li className={location.pathname === "/preprocessing" ? "active" : ""}>
+          <li
+            className={location.pathname === "/preprocessing" ? "active" : ""}
+          >
             <FaCog />
             <Link to="/preprocessing">Pre Processing Data</Link>
           </li>
@@ -33,6 +42,10 @@ function Sidebar() {
           <li className={location.pathname === "/klasifikasi" ? "active" : ""}>
             <FaChartBar />
             <Link to="/klasifikasi">Klasifikasi Naive Bayes</Link>
+          </li>
+          <li className={location.pathname === "/pilih-sentimen" ? "active" : ""}>
+            <FaChartPie className="fa-pie-chart" />
+            <Link to="/pilih-sentimen">Probabilitas Tertinggi</Link>
           </li>
         </ul>
       </nav>
@@ -54,6 +67,7 @@ function App() {
             <Route path="/preprocessing" element={<PreprocessingPage />} />
             <Route path="/ekstraksi" element={<EkstraksiFiturPage />} />
             <Route path="/klasifikasi" element={<KlasifikasiPage />} />
+            <Route path="/pilih-sentimen" element={<PilihSentimenPage />} />
             {/* Route lain */}
           </Routes>
         </main>

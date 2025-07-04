@@ -17,6 +17,7 @@ function KlasifikasiPage() {
         const data = await res.json();
         results.push({
           tweet: tw.content,
+          clean_tweet: data.clean_tweet,
           sentiment: data.sentiment,
           probabilities: data.probabilities,
         });
@@ -37,121 +38,120 @@ function KlasifikasiPage() {
         </div>
       )}
       {klasifikasi.length > 0 && (
-        <ol style={{ marginTop: 16 }}>
-          {klasifikasi.map((res, i) => {
-            // Hitung total vmap untuk bobot
-            const totalVmap = Object.values(res.probabilities).reduce(
-              (a, b) => a + b,
-              0
-            );
-            return (
-              <li
-                key={i}
-                style={{
-                  background: "#f4f6fb",
-                  padding: "18px",
-                  borderRadius: "8px",
-                  border: "1.5px solid #1976d2",
-                  wordBreak: "break-word",
-                  maxWidth: "100%",
-                  fontSize: "1rem",
-                  marginBottom: 18,
-                }}
-              >
-                <b>Tweet:</b> {res.tweet}
-                <br />
-                <b>Sentimen:</b>{" "}
-                <span style={{ color: "#1976d2" }}>{res.sentiment}</span>
-                <br />
-                <b>Perbandingan Probabilitas & Bobot:</b>
-                <table
-                  style={{
-                    marginTop: 10,
-                    marginBottom: 10,
-                    borderCollapse: "collapse",
-                    width: "100%",
-                  }}
-                >
-                  <thead>
-                    <tr style={{ background: "#e3eafc" }}>
-                      <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
-                        No
-                      </th>
-                      <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
-                        Kelas
-                      </th>
-                      <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
-                        Nilai Vmap
-                      </th>
-                      <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
-                        Bobot
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(res.probabilities).map(
-                      ([kelas, vmap], idx) => (
-                        <tr key={kelas}>
-                          <td
-                            style={{ border: "1px solid #b8c1ec", padding: 6 }}
-                          >
-                            {idx + 1}
-                          </td>
-                          <td
-                            style={{ border: "1px solid #b8c1ec", padding: 6 }}
-                          >
-                            {kelas.charAt(0).toUpperCase() + kelas.slice(1)}
-                          </td>
-                          <td
-                            style={{ border: "1px solid #b8c1ec", padding: 6 }}
-                          >
-                            {vmap.toLocaleString("en-US", {
-                              minimumFractionDigits: 20,
-                              maximumFractionDigits: 20,
-                            })}
-                          </td>
-                          <td
-                            style={{ border: "1px solid #b8c1ec", padding: 6 }}
-                          >
-                            {(vmap / totalVmap).toFixed(4)}
-                          </td>
-                        </tr>
-                      )
-                    )}
-                    <tr style={{ background: "#e3eafc", fontWeight: "bold" }}>
-                      <td
-                        colSpan={3}
-                        style={{
-                          border: "1px solid #b8c1ec",
-                          padding: 6,
-                          textAlign: "right",
-                        }}
-                      >
-                        Hasil
-                      </td>
-                      <td style={{ border: "1px solid #b8c1ec", padding: 6 }}>
-                        {Object.values(res.probabilities)
-                          .reduce((a, b) => a + b / totalVmap, 0)
-                          .toFixed(4)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <b>Probabilitas Detail:</b>
-                <pre
+        <>
+          <ol style={{ marginTop: 16 }}>
+            {klasifikasi.map((res, i) => {
+              const totalVmap = Object.values(res.probabilities).reduce(
+                (a, b) => a + b,
+                0
+              );
+              return (
+                <li
+                  key={i}
                   style={{
                     background: "#f4f6fb",
-                    padding: 10,
-                    borderRadius: 8,
-                    overflowX: "auto",
+                    padding: "18px",
+                    borderRadius: "8px",
+                    border: "1.5px solid #1976d2",
+                    wordBreak: "break-word",
+                    maxWidth: "100%",
+                    fontSize: "1rem",
+                    marginBottom: 18,
                   }}
                 >
-                  {JSON.stringify(res.probabilities, null, 2)}
-                </pre>
-              </li>
-            );
-          })}
-        </ol>
+                  <b>Tweet:</b> {res.clean_tweet}
+                  <br />
+                
+                  <b>Perbandingan Probabilitas & Bobot:</b>
+                  <table
+                    style={{
+                      marginTop: 10,
+                      marginBottom: 10,
+                      borderCollapse: "collapse",
+                      width: "100%",
+                    }}
+                  >
+                    <thead>
+                      <tr style={{ background: "#e3eafc" }}>
+                        <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
+                          No
+                        </th>
+                        <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
+                          Kelas
+                        </th>
+                        <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
+                          Nilai Vmap
+                        </th>
+                        <th style={{ border: "1px solid #b8c1ec", padding: 6 }}>
+                          Bobot
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(res.probabilities).map(
+                        ([kelas, vmap], idx) => (
+                          <tr key={kelas}>
+                            <td
+                              style={{ border: "1px solid #b8c1ec", padding: 6 }}
+                            >
+                              {idx + 1}
+                            </td>
+                            <td
+                              style={{ border: "1px solid #b8c1ec", padding: 6 }}
+                            >
+                              {kelas.charAt(0).toUpperCase() + kelas.slice(1)}
+                            </td>
+                            <td
+                              style={{ border: "1px solid #b8c1ec", padding: 6 }}
+                            >
+                              {vmap.toLocaleString("en-US", {
+                                minimumFractionDigits: 20,
+                                maximumFractionDigits: 20,
+                              })}
+                            </td>
+                            <td
+                              style={{ border: "1px solid #b8c1ec", padding: 6 }}
+                            >
+                              {(vmap / totalVmap).toFixed(4)}
+                            </td>
+                          </tr>
+                        )
+                      )}
+                      <tr style={{ background: "#e3eafc", fontWeight: "bold" }}>
+                        <td
+                          colSpan={3}
+                          style={{
+                            border: "1px solid #b8c1ec",
+                            padding: 6,
+                            textAlign: "right",
+                          }}
+                        >
+                          Hasil
+                        </td>
+                        <td style={{ border: "1px solid #b8c1ec", padding: 6 }}>
+                          {Object.values(res.probabilities)
+                            .reduce((a, b) => a + b / totalVmap, 0)
+                            .toFixed(4)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <b>Probabilitas Detail:</b>
+                  <pre
+                    style={{
+                      background: "#f4f6fb",
+                      padding: 10,
+                      borderRadius: 8,
+                      overflowX: "auto",
+                    }}
+                  >
+                    {JSON.stringify(res.probabilities, null, 2)}
+                  </pre>
+                </li>
+              );
+            })}
+          </ol>
+        </>
       )}
     </div>
   );

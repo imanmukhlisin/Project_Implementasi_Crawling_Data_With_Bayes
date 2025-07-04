@@ -52,8 +52,5 @@ def crawl_route():
         print('ERROR:', e)
         traceback.print_exc()
         return jsonify({'error': str(e), 'tweets': []}), 500
-
-# Tambahkan route lain jika ingin proses lain (misal: /fitur, /train, dsb)
-
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,7 +3,7 @@ import { useDataPipeline } from './DataPipelineContext';
 
 function CrawlingPage() {
   const [hashtag, setHashtag] = useState('');
-  const [jumlah, setJumlah] = useState(10);
+  const [jumlah, setJumlah] = useState();
   const { tweets, setTweets, setPreprocessed, setFeatures, setKlasifikasi } = useDataPipeline();
 
   const handleCrawl = async (e) => {
@@ -17,7 +17,7 @@ function CrawlingPage() {
       if (!res.ok) throw new Error('Server error');
       const data = await res.json();
       setTweets(data.tweets);
-      setPreprocessed([]); // reset pipeline
+      setPreprocessed([]); 
       setFeatures(null);
       setKlasifikasi([]);
     } catch (err) {

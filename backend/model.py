@@ -9,7 +9,7 @@ training_data = {
 doc_counts = {'positif': 2, 'negatif': 1, 'netral': 1}
 total_docs = sum(doc_counts.values())
 
-# 1. Hitung prior P(Vj) untuk tiap kelas
+# 1. Hitung prior probabilitas untuk tiap kelas
 prior_probs = {cls: doc_counts[cls] / total_docs for cls in doc_counts}
 
 # Hitung total kata per kelas dan vocab
@@ -22,12 +22,12 @@ V = len(vocab)
 def preprocess(text):
     # Case folding
     text = text.lower()
-    text = re.sub(r'http\S+', '', text)              # hapus URL
-    text = re.sub(r'@\w+', '', text)                 # hapus mention
-    text = re.sub(r'#\w+', '', text)                 # hapus hashtag
-    text = re.sub(r'\d+', '', text)                  # hapus angka
-    text = re.sub(r'[^a-z\s]', '', text)             # hapus karakter non-alfabet
-    text = re.sub(r'\s+', ' ', text).strip()         # hapus spasi berlebih
+    text = re.sub(r'http\S+', '', text)             
+    text = re.sub(r'@\w+', '', text)               
+    text = re.sub(r'#\w+', '', text)                 
+    text = re.sub(r'\d+', '', text)                 
+    text = re.sub(r'[^a-z\s]', '', text)            
+    text = re.sub(r'\s+', ' ', text).strip()         
     tokens = text.split()
 
     # Stopword removal
@@ -59,7 +59,7 @@ def preprocess(text):
     }
     tokens = [normalisasi.get(t, t) for t in tokens]
 
-    # Stemming sederhana
+    # Stemming 
     def stemmer(word):
         for suf in ['lah', 'kah', 'ku', 'mu', 'nya', 'pun', 'i', 'kan', 'an']:
             if word.endswith(suf):
